@@ -19,15 +19,15 @@ return new class extends Migration
             $table->string('description');
             $table->decimal('price', 19, 2);
             $table->integer('quantity');
-            $table->boolean('is_active');
-            $table->unsignedBigInteger('category_id');
+            $table->boolean('is_active')->default(true);
+//            $table->unsignedBigInteger('category_id');
             $table->timestamps();
             $table->softDeletes();
         });
 
-        Schema::table('products', function (Blueprint $table) {
-            $table->foreign('category_id')->references('id')->on('categories');
-        });
+//        Schema::table('products', function (Blueprint $table) {
+//            $table->foreign('category_id')->references('id')->on('categories');
+//        });
     }
 
     /**
