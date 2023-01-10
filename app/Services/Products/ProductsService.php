@@ -4,7 +4,6 @@ namespace App\Services\Products;
 
 use App\Repositories\Products\ProductsRepository;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use TheSeer\Tokenizer\Exception;
@@ -24,43 +23,40 @@ class ProductsService
     }
 
 
-public
-function createProduct($productsCreatRequest): Builder|Model
-{
-    return $this->productsRepository->create([
-        'name' => $productsCreatRequest['name'],
-        'description' => $productsCreatRequest['description'],
-        'price' => $productsCreatRequest['price'],
-        'quantity' => $productsCreatRequest['quantity'],
-        'is_active' => $productsCreatRequest['is_active']
-    ]);
-}
-
-public
-function updateProduct($productsUpdateRequest, $id): Builder|Model
-{
-    $product = $this->productsRepository->find($id);
-
-    if ($product === null) {
-        throw new Exception();
+    public function createProduct($productsCreatRequest): Builder|Model
+    {
+        return $this->productsRepository->create([
+            'name' => $productsCreatRequest['name'],
+            'description' => $productsCreatRequest['description'],
+            'price' => $productsCreatRequest['price'],
+            'quantity' => $productsCreatRequest['quantity'],
+            'is_active' => $productsCreatRequest['is_active']
+        ]);
     }
 
-    $product->update([$productsUpdateRequest]);
-    return $product;
-}
+    public function updateProduct($productsUpdateRequest, $id): bool
+    {
+        $product = $this->productsRepository->find($id);
+        if (!$product) {
+            throw new Exception('Produto não encontrado');
+        }
 
-public
-function deleteProduct($id): void
+        $product->update([
+            'name' => $productsUpdateRequest['name'],
+            'description' => $productsUpdateRequest['description'],
+            'price' => $productsUpdateRequest['price'],
+            'quantity' => $productsUpdateRequest['quantity'],
+            'is_active' => $productsUpdateRequest['is_active']
+        ]);
 
-{
-    $product = $this->productsRepository->find($id);
+        return true;
+    }
 
-    $product->delete();
-}
+    public function deleteProduct($id): void
 
-public
-function searchProduct($search): Collection
-{
-    return $this->productsRepository->searchProduct($search);
-}
+    {
+        $product = $this->productsRepository->find($id);
+
+        $product->delete();
+    }
 }
