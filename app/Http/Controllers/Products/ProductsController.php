@@ -8,6 +8,8 @@ use App\Http\Requests\Products\ProductsUpdateRequest;
 use App\Http\Responses\ApiResponse;
 use App\Services\Products\ProductsService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+
 
 class ProductsController extends Controller
 {
@@ -18,9 +20,9 @@ class ProductsController extends Controller
         $this->productsService = $productsService;
     }
 
-    public function showAllProducts(): JsonResponse
+    public function showAllProducts(Request $request ): JsonResponse
     {
-        return ApiResponse::success($this->productsService->showAllProducts());
+        return ApiResponse::success($this->productsService->showAllProducts($request));
     }
 
     public function createProduct(ProductsCreateRequest $productsCreatRequest): JsonResponse
@@ -48,6 +50,11 @@ class ProductsController extends Controller
         }catch (\Exception $e){
             return ApiResponse::error($e->getMessage(), 'Produto não encontrado', 404);
         }
+    }
+
+    public function searchProduct(string $search): JsonResponse
+    {
+        return ApiResponse::success($this->productsService->searchProduct($search));
     }
 }
 
