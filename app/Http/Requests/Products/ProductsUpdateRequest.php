@@ -25,8 +25,8 @@ class ProductsUpdateRequest extends ProductsCreateRequest
             'description' => 'sometimes|string',
             'price' => 'sometimes|numeric',
             'quantity' => 'sometimes|numeric',
+            'category_id' => 'sometimes|numeric',
             'is_active' => 'sometimes|boolean'
-//            'category_id' => 'sometimes|numeric'
         ];
     }
 }

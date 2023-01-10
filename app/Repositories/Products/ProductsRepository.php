@@ -19,6 +19,13 @@ class ProductsRepository extends AbstractRepository
         when(isset($request['search']), function ($query) use ($request) {
             $query->where('name', 'like', '%' . $request->query('search') . '%');
         })
+            ->with('category')
             ->paginate();
+
+    }
+    public function blockProduct($request, $products): bool
+    {
+        $products->is_active = $request['is_active'];
+        return $products->save();
     }
 }

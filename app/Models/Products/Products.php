@@ -16,6 +16,12 @@ class Products extends Model
         'description',
         'price',
         'quantity',
+        'category_id',
         'is_active',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo('App\Models\Categories\Categories');
+    }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Products\ProductsCreateRequest;
 use App\Http\Requests\Products\ProductsUpdateRequest;
 use App\Http\Responses\ApiResponse;
+use App\Models\Products\Products;
 use App\Services\Products\ProductsService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -25,7 +26,6 @@ class ProductsController extends Controller
     {
         return ApiResponse::success($this->productsService->showAllProducts($request));
     }
-
     public function createProduct(ProductsCreateRequest $productsCreatRequest): JsonResponse
     {
         return ApiResponse::success($this->productsService->createProduct($productsCreatRequest->validated()),
@@ -53,9 +53,14 @@ class ProductsController extends Controller
         }
     }
 
-    public function searchProduct(string $search): JsonResponse
+    public function blockProduct(Request $request, Products $products): JsonResponse
     {
-        return ApiResponse::success($this->productsService->searchProduct($search));
+        try {
+            $this->productsService->blockProduct($request, $products);
+            return ApiResponse::success( [], $request['is_active'] == 1 ? 'Produto ativado com sucesso' :  'Usuário desativado com sucesso' ,201);
+        } catch (Exception $e) {
+            return ApiResponse::error($e->getMessage(), 'Produto não encontrado', 404);
+        }
     }
 }
 

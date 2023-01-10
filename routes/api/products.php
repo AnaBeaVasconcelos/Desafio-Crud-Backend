@@ -14,4 +14,5 @@ Route::group(['prefix' => 'products'], function () {
     Route::post('/', [ProductsController ::class, 'createProduct']);
     Route::put('/{id}', [ProductsController ::class, 'updateProduct']);
     Route::delete('/{id}', [ProductsController ::class, 'deleteProduct']);
+    Route::put('/block/{products}', [ProductsController ::class, 'blockProduct']);
 });

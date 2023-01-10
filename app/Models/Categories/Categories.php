@@ -9,8 +9,13 @@ class Categories extends Model
 {
     use HasFactory;
 
-protected $fillable = [
+    protected $fillable = [
         'name',
         'is_active',
     ];
+
+    public function products()
+    {
+        return $this->hasMany('App\Models\Products\Products');
+    }
 }
