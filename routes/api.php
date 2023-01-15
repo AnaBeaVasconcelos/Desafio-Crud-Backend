@@ -27,6 +27,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::middleware('api')
         ->group(base_path('routes/api/products.php'));
 
+    //Categories
     Route::middleware('api')
         ->group(base_path('routes/api/categories.php'));
 });
