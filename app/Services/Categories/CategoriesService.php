@@ -6,6 +6,7 @@ use App\Repositories\Categories\CategoriesRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 use TheSeer\Tokenizer\Exception;
 
 class CategoriesService
@@ -20,6 +21,11 @@ class CategoriesService
     public function showAllCategories($request = null): LengthAwarePaginator
     {
         return $this->categoriesRepository->showAllCategories($request);
+    }
+
+    public function getAll(): Collection
+    {
+        return $this->categoriesRepository->getAll();
     }
 
     public function createCategories($categoriesCreateRequest): Builder|Model

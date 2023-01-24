@@ -4,6 +4,7 @@ namespace App\Repositories\Products;
 
 use App\Contracts\Repository\AbstractRepository;
 use App\Models\Products\Products;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductsRepository extends AbstractRepository
@@ -21,8 +22,13 @@ class ProductsRepository extends AbstractRepository
         })
             ->with('category')
             ->paginate();
-
     }
+
+    public function getAll(): Collection
+    {
+        return $this->getModel()::all();
+    }
+
     public function blockProduct($request, $products): bool
     {
         $products->is_active = $request['is_active'];

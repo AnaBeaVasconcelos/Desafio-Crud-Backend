@@ -26,6 +26,12 @@ class ProductsController extends Controller
     {
         return ApiResponse::success($this->productsService->showAllProducts($request));
     }
+
+    public function getAll(): JsonResponse
+    {
+        return ApiResponse::success($this->productsService->getAll());
+    }
+
     public function createProduct(ProductsCreateRequest $productsCreatRequest): JsonResponse
     {
         return ApiResponse::success($this->productsService->createProduct($productsCreatRequest->validated()),

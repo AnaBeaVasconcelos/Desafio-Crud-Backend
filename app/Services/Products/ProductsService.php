@@ -5,6 +5,7 @@ namespace App\Services\Products;
 use App\Models\Products\Products;
 use App\Repositories\Products\ProductsRepository;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use JetBrains\PhpStorm\NoReturn;
@@ -25,6 +26,10 @@ class ProductsService
 
     }
 
+    public function getAll(): Collection
+    {
+        return $this->productsRepository->getAll();
+    }
 
     public function createProduct($productsCreatRequest): Builder|Model
     {
@@ -41,6 +46,7 @@ class ProductsService
     public function updateProduct($productsUpdateRequest, $id): bool
     {
         $product = $this->productsRepository->find($id);
+
         if (!$product) {
             throw new Exception('Produto não encontrado');
         }

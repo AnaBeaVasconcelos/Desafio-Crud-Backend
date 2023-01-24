@@ -4,6 +4,7 @@ namespace App\Repositories\Categories;
 
 use App\Contracts\Repository\AbstractRepository;
 use App\Models\Categories\Categories;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class CategoriesRepository extends AbstractRepository
@@ -20,5 +21,10 @@ class CategoriesRepository extends AbstractRepository
             $query->where('name', 'like', '%' . $request->query('search') . '%');
         })
             ->paginate();
+    }
+
+    public function getAll():  Collection
+    {
+        return $this->getModel()::all();
     }
 }

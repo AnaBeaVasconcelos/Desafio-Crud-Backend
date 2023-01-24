@@ -26,6 +26,11 @@ class CategoriesController extends Controller
         return ApiResponse::success($this->categoriesService->showAllCategories($request));
     }
 
+    public function getAll(): JsonResponse
+    {
+        return ApiResponse::success($this->categoriesService->getAll());
+    }
+
     public function createCategories(CategoriesCreateRequest $categoriesCreateRequest): JsonResponse
     {
         return ApiResponse::success($this->categoriesService->createCategories($categoriesCreateRequest->validated()),
