@@ -3,10 +3,10 @@
 namespace App\Services\Categories;
 
 use App\Repositories\Categories\CategoriesRepository;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 use TheSeer\Tokenizer\Exception;
 
 class CategoriesService
@@ -18,7 +18,7 @@ class CategoriesService
         $this->categoriesRepository = $categoriesRepository;
     }
 
-    public function showAllCategories($request = null): LengthAwarePaginator
+    public function showAllCategories($request = null): Collection
     {
         return $this->categoriesRepository->showAllCategories($request);
     }
@@ -32,7 +32,6 @@ class CategoriesService
     {
         return $this->categoriesRepository->create([
             'name' => $categoriesCreateRequest['name'],
-            'is_active' => $categoriesCreateRequest['is_active']
         ]);
     }
 
@@ -45,7 +44,6 @@ class CategoriesService
 
         $categories->update([
             'name' => $categoriesUpdateRequest['name'],
-            'is_active' => $categoriesUpdateRequest['is_active']
         ]);
 
         return true;
@@ -53,13 +51,19 @@ class CategoriesService
 
     public function deleteCategories($id): void
     {
+
         $categories = $this->categoriesRepository->find($id);
 
-        if (!$categories) {
-            throw new Exception('Categoria não encontrada');
+        $products = DB::table('products')
+            ->where('category_id', $id)
+            ->get();
+
+        if($products->count() > 0){
+            throw new Exception('Categoria não pode ser deletada, pois possui produtos vinculados');
         }
 
         $categories->delete();
+
     }
 
     public function blockCategories($request, $categories): bool

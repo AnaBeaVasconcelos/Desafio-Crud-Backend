@@ -25,7 +25,6 @@ class CategoriesUpdateRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|string',
-            'is_active' => 'sometimes|boolean'
         ];
     }
 }

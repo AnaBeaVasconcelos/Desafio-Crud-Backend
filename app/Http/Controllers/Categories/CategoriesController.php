@@ -26,11 +26,6 @@ class CategoriesController extends Controller
         return ApiResponse::success($this->categoriesService->showAllCategories($request));
     }
 
-    public function getAll(): JsonResponse
-    {
-        return ApiResponse::success($this->categoriesService->getAll());
-    }
-
     public function createCategories(CategoriesCreateRequest $categoriesCreateRequest): JsonResponse
     {
         return ApiResponse::success($this->categoriesService->createCategories($categoriesCreateRequest->validated()),
@@ -54,7 +49,7 @@ class CategoriesController extends Controller
             $this->categoriesService->deleteCategories($id);
             return ApiResponse::success(null, 'Categoria deletada com sucesso', 200);
         } catch (Exception $e) {
-            return ApiResponse::error($e->getMessage(), 'Categoria não encontrada', 404);
+            return ApiResponse::error($e->getMessage());
         }
     }
 
@@ -64,7 +59,8 @@ class CategoriesController extends Controller
             $this->categoriesService->blockCategories($request, $categories);
             return ApiResponse::success( [], $request['is_active'] == 1 ? 'Categoria ativada com sucesso' :  'Categoria desativada com sucesso' ,201);
         } catch (Exception $e) {
-            return ApiResponse::error($e->getMessage(), 'Categoria não encontrada', 404);
+            return ApiResponse::error($e->getMessage());
         }
     }
+
 }

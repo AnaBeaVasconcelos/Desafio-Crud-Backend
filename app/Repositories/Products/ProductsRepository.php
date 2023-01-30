@@ -4,8 +4,9 @@ namespace App\Repositories\Products;
 
 use App\Contracts\Repository\AbstractRepository;
 use App\Models\Products\Products;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Model;
 
 class ProductsRepository extends AbstractRepository
 {
@@ -13,20 +14,14 @@ class ProductsRepository extends AbstractRepository
     {
         $this->setModel(Products::class);
     }
-
-    public function showAllProducts($request): LengthAwarePaginator
+    public function showAllProducts($request): Collection
     {
         return $this->getModel()::
-        when(isset($request['search']), function ($query) use ($request) {
-            $query->where('name', 'like', '%' . $request->query('search') . '%');
-        })
+            when(isset($request['search']), function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->query('search') . '%');
+            })
             ->with('category')
-            ->paginate();
-    }
-
-    public function getAll(): Collection
-    {
-        return $this->getModel()::all();
+            ->get();
     }
 
     public function blockProduct($request, $products): bool

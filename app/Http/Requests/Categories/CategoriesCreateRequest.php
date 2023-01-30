@@ -25,7 +25,6 @@ class CategoriesCreateRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'is_active' => 'required|boolean',
         ];
     }
 }

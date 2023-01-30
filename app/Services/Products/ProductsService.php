@@ -4,11 +4,12 @@ namespace App\Services\Products;
 
 use App\Models\Products\Products;
 use App\Repositories\Products\ProductsRepository;
+use http\Env\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Pagination\LengthAwarePaginator;
 use JetBrains\PhpStorm\NoReturn;
+use PhpParser\Node\Stmt\DeclareDeclare;
 use TheSeer\Tokenizer\Exception;
 
 class ProductsService
@@ -20,15 +21,9 @@ class ProductsService
         $this->productsRepository = $productsRepository;
     }
 
-    public function showAllProducts($request = null): LengthAwarePaginator
+    public function showAllProducts($request = null): Collection
     {
         return $this->productsRepository->showAllProducts($request);
-
-    }
-
-    public function getAll(): Collection
-    {
-        return $this->productsRepository->getAll();
     }
 
     public function createProduct($productsCreatRequest): Builder|Model
@@ -39,7 +34,6 @@ class ProductsService
             'price' => $productsCreatRequest['price'],
             'quantity' => $productsCreatRequest['quantity'],
             'category_id' => $productsCreatRequest['category_id'],
-            'is_active' => $productsCreatRequest['is_active']
         ]);
     }
 
@@ -57,7 +51,6 @@ class ProductsService
             'price' => $productsUpdateRequest['price'],
             'quantity' => $productsUpdateRequest['quantity'],
             'category_id' => $productsUpdateRequest['category_id'],
-            'is_active' => $productsUpdateRequest['is_active']
         ]);
 
         return true;
