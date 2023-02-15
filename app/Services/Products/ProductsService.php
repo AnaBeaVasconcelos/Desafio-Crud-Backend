@@ -57,7 +57,6 @@ class ProductsService
     }
 
     public function deleteProduct($id): void
-
     {
         $product = $this->productsRepository->find($id);
 

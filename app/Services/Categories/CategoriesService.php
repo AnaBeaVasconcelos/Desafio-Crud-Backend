@@ -4,8 +4,8 @@ namespace App\Services\Categories;
 
 use App\Repositories\Categories\CategoriesRepository;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use TheSeer\Tokenizer\Exception;
 
@@ -51,19 +51,18 @@ class CategoriesService
 
     public function deleteCategories($id): void
     {
-
         $categories = $this->categoriesRepository->find($id);
 
         $products = DB::table('products')
             ->where('category_id', $id)
+            ->whereNull('deleted_at')
             ->get();
 
-        if($products->count() > 0){
-            throw new Exception('Categoria não pode ser deletada, pois possui produtos vinculados');
+        if (count($products) > 0) {
+            throw new Exception('Não é possível deletar uma categoria que possui produtos');
         }
 
         $categories->delete();
-
     }
 
     public function blockCategories($request, $categories): bool
